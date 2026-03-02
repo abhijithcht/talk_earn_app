@@ -1,0 +1,23 @@
+{
+  "name": "talk-earn-app",
+  "version": "1.0.0",
+  "description": "Talk & Earn — Capacitor web shell for the Talk & Earn platform",
+  "main": "app.js",
+  "scripts": {
+    "cap:sync": "npx cap sync",
+    "cap:open": "npx cap open android",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "talk-and-earn",
+    "capacitor",
+    "webrtc"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0"
+  }
+}

@@ -1,0 +1,65 @@
+# ============================================================
+# Talk & Earn — .gitignore
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+.venv/
+.pytest_cache/
+.mypy_cache/
+
+# --- Node ---
+node_modules/
+npm-debug.log*
+
+# --- Database ---
+*.db
+*.sqlite3
+
+# --- Environment ---
+.env
+
+# --- IDE ---
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Flutter ---
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+**/build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+*.symbols
+*.map.json
+
+# --- Capacitor ---
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# --- Uploads (user-generated content) ---
+static/uploads/*
+!static/uploads/.gitkeep
+
+# --- Misc ---
+*.log
+*.swp
+*.bak
+*.tmp

@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Talk & Earn - The Future of Connecting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050b14;
+            --glass-bg: rgba(16, 25, 43, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-text: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animated Cartoon Background */
+        .floating-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            bottom: -100px;
+            font-size: 2rem;
+            opacity: 0.15;
+            user-select: none;
+            animation: float-up 15s linear infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translateY(-50vh) rotate(180deg) translateX(50px);
+            }
+
+            90% {
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg) translateX(-50px);
+                opacity: 0;
+            }
+        }
+
+        /* Container & Glass Panels */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            padding: 2.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Views System */
+        .view-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .view-section.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-weight: 700;
+        }
+
+        .gradient-text {
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ---- LANDING PAGE (HERO) ---- */
+        #landing-view {
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Landing Page Extras: Stats & How It Works */
+        .stats-banner {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(16, 25, 43, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1rem 2rem;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .how-it-works {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            background: rgba(16, 25, 43, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            background: rgba(16, 25, 43, 0.5);
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 10px 20px -10px var(--primary);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #059669, #10b981);
+            box-shadow: 0 10px 20px -10px var(--accent);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* ---- AUTH SCREEN ---- */
+        #auth-view {
+            align-items: center;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 3rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Inputs */
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ---- DASHBOARD GRID ---- */
+        .dash-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .dash-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Sidebar Widgets */
+        .widget {
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .widget-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .widget-title i {
+            color: var(--secondary);
+        }
+
+        .balance-display {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            text-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .balance-display span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* Communication Hub */
+        .comm-hub {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            min-height: 600px;
+        }
+
+        /* Stranger Radar Animation */
+        .radar-container {
+            display: none;
+            position: relative;
+            height: 250px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+        }
+
+        .radar-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            opacity: 0;
+            animation: radar-pulse 3s infinite cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .radar-circle:nth-child(2) {
+            animation-delay: 1s;
+            border-color: var(--primary);
+        }
+
+        .radar-circle:nth-child(3) {
+            animation-delay: 2s;
+            border-color: var(--accent);
+        }
+
+        .radar-center {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        @keyframes radar-pulse {
+            0% {
+                width: 40px;
+                height: 40px;
+                opacity: 1;
+            }
+
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+        }
+
+        .media-grid {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            height: 300px;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-logs {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            height: 180px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #38bdf8;
+        }
+
+        .log-entry {
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .log-error {
+            color: #f87171;
+        }
+
+        /* Floating Chat Overlay */
+        .comm-hub {
+            position: relative;
+            /* Anchor for absolute positioning */
+        }
+
+        .floating-chat {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            height: 380px;
+            background: rgba(16, 25, 43, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .floating-chat.closed {
+            transform: translateY(120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chat-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .chat-toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .chat-toggle-btn:hover {
+            color: white;
+        }
+
+        .show-chat-float-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.4);
+            z-index: 90;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .show-chat-float-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Fixed text layout for hybrid mode */
+        .text-only-mode {
+            position: relative !important;
+            bottom: auto !important;
+            right: auto !important;
+            width: 100% !important;
+            height: 400px !important;
+            transform: none !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        /* Rating Modal */
+        .rating-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .rating-modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-direction: row-reverse;
+            /* For CSS sibling hover magic */
+        }
+
+        .star-rating .star {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .star-rating .star:hover,
+        .star-rating .star:hover~.star,
+        .star-rating .star.selected,
+        .star-rating .star.selected~.star {
+            color: #fbbf24;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+            transform: scale(1.1);
+        }
+
+        /* Global Chat */
+        .global-chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 300px;
+        }
+
+        .global-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            margin-bottom: 0.75rem;
+        }
+
+        .global-msg {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .global-msg-author {
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.15rem;
+            font-size: 0.8rem;
+        }
+
+        /* Avatar Selection */
+        .avatar-selector {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 999px;
+            border: 1px solid var(--glass-border);
+            margin-left: 1rem;
+            align-items: center;
+        }
+
+        .avatar-option {
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.2rem;
+            border-radius: 50%;
+            transition: transform 0.2s, background 0.2s;
+            filter: grayscale(100%) opacity(0.5);
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.1);
+            filter: grayscale(0%) opacity(1);
+        }
+
+        .avatar-option.selected {
+            background: rgba(255, 255, 255, 0.1);
+            filter: grayscale(0%) opacity(1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Avatar Studio Overlay */
+        .avatar-studio-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .studio-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .studio-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.1));
+            padding: 3rem;
+        }
+
+        .studio-controls {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .trait-section h4 {
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trait-grid {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .trait-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .trait-btn:hover,
+        .trait-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .current-avatar {
+            font-size: 1.5rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Ambient Cartoon Background -->
+    <div class="floating-container" id="floating-bg-container">
+        <!-- Javascript will inject emojis here -->
+    </div>
+
+    <!-- 1. LANDING VIEW -->
+    <div id="landing-view" class="view-section active">
+        <div>
+            <h1 class="hero-title">Connect. Talk.<br><span class="gradient-text">Earn Crypto.</span></h1>
+            <p class="hero-subtitle">The world's first decentralized social matching platform. Get paid for every minute
+                you spend networking securely via end-to-end encrypted WebRTC.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="showView('auth-view', false)">
+                    <i class="fa-solid fa-rocket"></i> Get Started Now
+                </button>
+                <button class="btn btn-outline" onclick="showView('auth-view', true)">
+                    Log In <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Live Stats Banner -->
+            <div class="stats-banner">
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-online">1,248</div>
+                    <div class="stat-label">Users Online</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-calls">342</div>
+                    <div class="stat-label">Active Encrypted Sessions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-accent" style="color: var(--accent);">$<span
+                            id="stat-crypto">14,204</span></div>
+                    <div class="stat-label">Total Earnings Payouts</div>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <h2 style="margin-bottom: 2rem; text-align: center; font-size: 2rem;">How It Works</h2>
+            <div class="how-it-works">
+                <div class="step-card">
+                    <div class="step-icon">🛡️</div>
+                    <div class="step-title">1. Instant Verification</div>
+                    <div class="step-desc">Create your profile and pass our automated AI safety check. Only real humans
+                        allowed.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">💬</div>
+                    <div class="step-title">2. Connect Securely</div>
+                    <div class="step-desc">Match with verified strangers instantly via End-to-End Encrypted WebRTC Video
+                        or Text.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">💰</div>
+                    <div class="step-title">3. Talk & Earn</div>
+                    <div class="step-desc">Earn Crypto exactly for the amount of time you spend socializing. Maintain
+                        high ratings for huge multipliers.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. AUTH VIEW -->
+    <div id="auth-view" class="view-section">
+        <div class="glass-panel auth-card">
+
+            <!-- Default Auth Container -->
+            <div id="auth-container">
+                <div class="auth-header">
+                    <h2 id="auth-title" class="gradient-text">Welcome Back</h2>
+                    <p style="color: var(--text-muted); margin-top:0.5rem;" id="auth-subtitle">Sign in to access your
+                        dashboard.</p>
+                </div>
+
+                <form id="auth-form">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" required autocomplete="email">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="password" required autocomplete="current-password">
+                    </div>
+
+                    <!-- Hidden unless registering -->
+                    <div class="input-group" id="gender-group" style="display: none;">
+                        <label>I identify as</label>
+                        <select id="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="auth-btn">
+                        <span class="btn-text">Sign In</span>
+                        <div class="loader" id="auth-loader"></div>
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 1.5rem; font-size: 0.95rem;">
+                    <span style="color: var(--text-muted);" id="auth-switch-text">Don't have an account?</span>
+                    <a href="#" id="auth-toggle"
+                        style="color: var(--secondary); text-decoration: none; font-weight: 500; margin-left: 0.5rem;">Register</a>
+                </div>
+
+                <div id="auth-error"
+                    style="color: #ef4444; margin-top: 1rem; text-align: center; font-size: 0.9rem; display: none;">
+                </div>
+            </div>
+
+            <!-- Email OTP Container (Hidden by default) -->
+            <div id="otp-container" style="display: none;">
+                <div class="auth-header">
+                    <h2 class="gradient-text">Check Your Email</h2>
+                    <p style="color: var(--text-muted); margin-top:0.5rem;">We sent a secure 6-digit code.</p>
+                </div>
+
+                <form id="otp-form">
+                    <div class="input-group">
+                        <input type="text" id="otp-code" required placeholder="000000" maxlength="6"
+                            style="text-align: center; font-size: 2rem; letter-spacing: 0.5em; font-weight: 700;">
+                    </div>
+                    <button type="submit" class="btn btn-success" style="width: 100%;" id="otp-btn">
+                        <span class="btn-text">Verify Account</span>
+                        <div class="loader" id="otp-loader"></div>
+                    </button>
+                </form>
+                <div id="otp-error"
+                    style="color: #ef4444; margin-top: 1rem; text-align: center; font-size: 0.9rem; display: none;">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 3. PRIVILEGED DASHBOARD -->
+    <div id="dashboard-view" class="view-section" style="justify-content: flex-start;">
+        <div class="dash-header" style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <h3><i class="fa-solid fa-wave-square" style="color: var(--primary); margin-right: 0.5rem;"></i> Talk &
+                    Earn</h3>
+
+                <div id="avatar-studio-btn"
+                    style="display: flex; align-items: center; background: rgba(0,0,0,0.3); padding: 0.25rem 0.75rem 0.25rem 0.25rem; border-radius: 999px; border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.2s; margin-left: 1rem;">
+                    <!-- Tiny SVG Avatar injection point -->
+                    <div id="header-avatar-container"
+                        style="width: 35px; height: 35px; border-radius: 50%; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; overflow: hidden; margin-right: 0.5rem;">
+                        <span style="font-size: 1.2rem;">👤</span>
+                    </div>
+                    <span style="font-size: 0.85rem; font-weight: 500;">Customize</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="btn btn-outline" style="padding: 0.5rem; font-size: 0.9rem;" id="settings-btn"
+                    title="Account Settings">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <button class="btn btn-outline" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;" id="logout-btn">Log
+                    Out</button>
+            </div>
+        </div>
+
+        <div class="dash-layout">
+
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <div class="glass-panel widget">
+                    <div class="widget-title">
+                        <i class="fa-solid fa-wallet"></i> Earnings Wallet
+                    </div>
+                    <div class="balance-display">
+                        <span id="wallet-balance">0.00</span> <span>TC</span>
+                    </div>
+                    <p style="color: var(--accent); font-size: 0.85rem; margin-top: 0.5rem;"><i
+                            class="fa-solid fa-star"></i> Pro Rating (+10% Boost)</p>
+
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+                        <button class="btn btn-primary" style="flex: 1; padding: 0.75rem;" id="withdraw-btn">Cash
+                            Out</button>
+                        <button class="btn btn-outline" style="padding: 0.75rem;" id="refresh-wallet-btn"
+                            title="Refresh"><i class="fa-solid fa-rotate-right"></i></button>
+                    </div>
+                    <div id="wallet-msg" style="margin-top: 1rem; font-size: 0.85rem; display: none;"></div>
+                </div>
+
+                <div class="glass-panel widget">
+                    <div class="widget-title">
+                        <i class="fa-solid fa-sliders"></i> Match Preferences
+                    </div>
+                    <div class="input-group" style="margin-bottom: 1rem;">
+                        <select id="pref-gender">
+                            <option value="any">Global (Fastest)</option>
+                            <option value="male">Males Only</option>
+                            <option value="female">Females Only</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;" id="save-pref-btn">Save Filter</button>
+                </div>
+
+                <!-- Global Chat Widget -->
+                <div class="glass-panel widget" style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="widget-title" style="display: flex; justify-content: space-between;">
+                        <span><i class="fa-solid fa-earth-americas"></i> Global Lounge</span>
+                        <span id="global-ws-status" style="font-size: 0.7rem; color: #10b981;">Online</span>
+                    </div>
+
+                    <div class="global-chat-container">
+                        <div class="global-messages" id="global-messages-container">
+                            <div
+                                style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: auto; margin-bottom: auto;">
+                                Welcome to the World channel! Say hi.
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="global-chat-input"
+                                style="flex: 1; padding: 0.5rem 0.75rem; border-radius: 999px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3); color: white; outline: none; font-size: 0.85rem;"
+                                placeholder="Broadcast to World...">
+                            <button class="btn btn-primary" id="send-global-btn"
+                                style="border-radius: 50%; width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-paper-plane" style="font-size: 0.75rem;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Main Comm Area -->
+            <div class="glass-panel comm-hub">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="gradient-text">Live Network</h2>
+                    <span id="ws-status"
+                        style="font-size: 0.85rem; font-weight: 600; background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 0.25rem 0.75rem; border-radius: 999px;">Offline</span>
+                </div>
+
+                <!-- Searching Animation (Hidden initially) -->
+                <div id="radar-ui"
+                    style="display: none; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center;">
+                    <div id="radar-status-text"
+                        style="color: var(--accent); font-weight: 600; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Searching for friends...</div>
+
+                    <div class="radar-container" id="radar-animation" style="display: flex;">
+                        <div class="radar-circle"></div>
+                        <div class="radar-circle"></div>
+                        <div class="radar-circle"></div>
+                        <div class="radar-center">
+                            <i class="fa-solid fa-satellite-dish" style="color: white; font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Found User Transition Card -->
+                    <div id="found-user-card"
+                        style="display: none; flex-direction: column; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); width: 220px; animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">
+                        <div id="found-user-avatar"
+                            style="width: 80px; height: 80px; border-radius: 50%; background: var(--bg-dark); border: 2px solid var(--accent); overflow: hidden; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);">
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.8rem;">Matched with:</div>
+                        <div id="found-user-name" style="color: white; font-size: 1.25rem; font-weight: 700;">Finding...
+                        </div>
+                        <div style="color: var(--accent); font-size: 0.75rem; font-weight: 600;">Connecting...</div>
+                    </div>
+                    <button class="btn btn-danger" id="cancel-match-btn"
+                        style="padding: 0.75rem 2rem; font-size: 0.9rem; border-radius: 999px;">
+                        <i class="fa-solid fa-xmark"></i> Cancel Search
+                    </button>
+                </div>
+
+                <!-- Video Chat Interface -->
+                <div id="video-ui" class="media-grid">
+                    <video id="local-video" autoplay muted playsinline></video>
+                    <video id="remote-video" autoplay playsinline></video>
+                </div>
+
+                <!-- Primary Action Buttons -->
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;" id="match-controls">
+                    <button class="btn btn-primary" style="flex: 1; padding: 1rem; font-size: 0.95rem;"
+                        id="find-text-btn">
+                        <i class="fa-solid fa-comment"></i> Text Chat
+                    </button>
+                    <button class="btn btn-primary"
+                        style="flex: 1; padding: 1rem; font-size: 0.95rem; background: linear-gradient(135deg, #0ea5e9, #3b82f6);"
+                        id="find-audio-btn">
+                        <i class="fa-solid fa-phone"></i> Voice Call
+                    </button>
+                    <button class="btn btn-success" style="flex: 1; padding: 1rem; font-size: 0.95rem;"
+                        id="find-video-btn">
+                        <i class="fa-solid fa-video"></i> Video Call
+                    </button>
+                </div>
+
+                <!-- Floating / Hybrid Text Chat Interface -->
+                <button id="show-chat-btn" class="show-chat-float-btn" style="display: none;">
+                    <i class="fa-solid fa-comment"></i>
+                </button>
+
+                <div id="text-chat-ui" class="floating-chat closed" style="display: none;">
+                    <div class="chat-header">
+                        <span><i class="fa-solid fa-message" style="color: var(--secondary); margin-right: 0.5rem;"></i>
+                            Live Chat</span>
+                        <button id="hide-chat-btn" class="chat-toggle-btn"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div id="messages-container"
+                        style="flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Session started.
+                            Say hi!</div>
+                    </div>
+                    <div
+                        style="padding: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.5rem;">
+                        <input type="text" id="chat-message-input"
+                            style="flex: 1; padding: 0.6rem 1rem; border-radius: 999px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3); color: white; outline: none; font-size: 0.9rem;"
+                            placeholder="Type a message...">
+                        <button class="btn btn-primary" id="send-msg-btn"
+                            style="border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center;"><i
+                                class="fa-solid fa-paper-plane" style="font-size: 0.85rem;"></i></button>
+                    </div>
+                </div>
+
+                <button class="btn btn-danger" style="width: 100%; padding: 1.25rem; font-size: 1.1rem; display: none;"
+                    id="end-call-btn">
+                    <i class="fa-solid fa-phone-slash"></i> Terminate Session
+                </button>
+
+                <!-- Technical Output -->
+                <div style="margin-top: auto;">
+                    <div class="widget-title" style="margin-bottom: 0.5rem; font-size: 0.9rem;">WebRTC Signaling</div>
+                    <div id="logs" class="terminal-logs"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 4. RATING MODAL (Hidden by default) -->
+    <div id="rating-modal" class="rating-modal-overlay">
+        <div class="glass-panel" style="width: 90%; max-width: 450px; text-align: center;">
+            <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 0.5rem;">Rate Your Session</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">How was your interaction? Your feedback keeps our
+                community safe.</p>
+
+            <div class="star-rating" id="star-rating-container">
+                <i class="fa-solid fa-star star" data-value="5"></i>
+                <i class="fa-solid fa-star star" data-value="4"></i>
+                <i class="fa-solid fa-star star" data-value="3"></i>
+                <i class="fa-solid fa-star star" data-value="2"></i>
+                <i class="fa-solid fa-star star" data-value="1"></i>
+            </div>
+
+            <input type="hidden" id="selected-rating" value="0">
+            <button class="btn btn-primary" id="submit-rating-btn" style="width: 100%; padding: 1rem;" disabled>
+                Submit Feedback
+            </button>
+            <div id="rating-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.85rem; display: none;"></div>
+        </div>
+    </div>
+
+    <!-- 5. SETTINGS MODAL (Hidden by default) -->
+    <div id="settings-modal" class="rating-modal-overlay">
+        <div class="glass-panel"
+            style="width: 90%; max-width: 450px; text-align: left; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 class="gradient-text" style="font-size: 1.8rem; margin: 0;">Account Settings</h2>
+                <button id="close-settings-btn" class="btn btn-outline"
+                    style="padding: 0.5rem; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <h4 style="color: white; margin-bottom: 0.5rem;">Edit Profile</h4>
+            <form id="profile-edit-form" style="margin-bottom: 2rem;">
+                <div class="input-group">
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">Full Name</label>
+                    <input type="text" id="setting-name-input" placeholder="Your Name">
+                </div>
+                <div class="input-group">
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">Gender</label>
+                    <select id="setting-gender-input">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">Interests (Comma separated)</label>
+                    <input type="text" id="setting-interests-input" placeholder="Coding, Music, Travel">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Profile</button>
+                <div id="profile-edit-msg" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+            </form>
+
+            <h4 style="color: white; margin-bottom: 0.5rem;">Design & Appearance</h4>
+            <div
+                style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.2); margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img id="setting-profile-pic-preview" src=""
+                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; display: none;" />
+                    <div id="setting-profile-svg-preview"
+                        style="width: 50px; height: 50px; border-radius: 50%; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                        <span style="font-size: 1.5rem;">👤</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <input type="file" id="profile-upload-input" accept="image/png, image/jpeg, image/webp"
+                            style="display: none;">
+                        <button class="btn btn-outline" id="trigger-upload-btn"
+                            style="width: 100%; padding: 0.5rem; font-size: 0.85rem;"><i class="fa-solid fa-camera"></i>
+                            Upload Photo</button>
+                    </div>
+                </div>
+                <button class="btn btn-success" id="open-studio-from-settings"
+                    style="width: 100%; padding: 0.75rem; font-size: 0.9rem; background: linear-gradient(135deg, #10b981, #059669);"><i
+                        class="fa-solid fa-wand-magic-sparkles"></i> Open 3D Avatar Studio</button>
+                <div id="upload-msg" style="margin-top: -0.5rem; font-size: 0.8rem; display: none;"></div>
+            </div>
+
+            <h4 style="color: white; margin-bottom: 0.5rem;">Account Info</h4>
+            <div
+                style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.2); margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                    <strong>Email:</strong> <span id="setting-email-display" style="color: white;">Loading...</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;"><strong>Age:</strong> <span
+                        id="setting-age-display" style="color: white;">Not Verified</span></div>
+            </div>
+
+            <h4 style="color: white; margin-bottom: 0.5rem;">Change Password</h4>
+            <form id="password-form" style="margin-bottom: 2rem;">
+                <div class="input-group">
+                    <input type="password" id="current-password" placeholder="Current Password" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="new-password" placeholder="New Password" required
+                        autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Update Password</button>
+                <div id="password-msg" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+            </form>
+
+            <h4 style="color: #ef4444; margin-bottom: 0.5rem;"><i class="fa-solid fa-triangle-exclamation"></i> Danger
+                Zone</h4>
+            <div
+                style="padding: 1rem; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; background: rgba(239, 68, 68, 0.05);">
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Permanently delete your
+                    account and clear all active data. This action cannot be undone.</p>
+                <form id="delete-account-form">
+                    <div class="input-group">
+                        <input type="password" id="delete-password" placeholder="Confirm Password to Delete" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger" style="width: 100%;">Delete Account</button>
+                    <div id="delete-msg" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. AVATAR STUDIO MODAL -->
+    <div id="avatar-studio-modal" class="avatar-studio-modal">
+        <div class="studio-layout">
+            <div class="studio-preview">
+                <div id="studio-avatar-render"
+                    style="width: 250px; height: 250px; border-radius: 50%; background: var(--bg-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                    <!-- Live SVG Render Injection -->
+                </div>
+            </div>
+            <div class="studio-controls">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                    <h3 style="color: white; font-size: 1.5rem; margin: 0;">Avatar Studio</h3>
+                    <button id="close-studio-btn" class="btn btn-outline"
+                        style="padding: 0.5rem; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="trait-section">
+                    <h4>Skin Tone</h4>
+                    <div class="trait-grid" id="trait-grid-skin"></div>
+                </div>
+
+                <div class="trait-section">
+                    <h4>Hair Style</h4>
+                    <div class="trait-grid" id="trait-grid-hair"></div>
+                </div>
+
+                <div class="trait-section">
+                    <h4>Face / Expresion</h4>
+                    <div class="trait-grid" id="trait-grid-face"></div>
+                </div>
+
+                <div class="trait-section">
+                    <h4>Clothing</h4>
+                    <div class="trait-grid" id="trait-grid-body"></div>
+                </div>
+
+                <button class="btn btn-success" id="save-avatar-btn"
+                    style="width: 100%; padding: 1rem; margin-top: auto; font-size: 1.1rem;">
+                    <i class="fa-solid fa-check"></i> Save Custom Avatar
+                </button>
+                <div id="studio-error-msg"
+                    style="color: #ef4444; font-size: 0.85rem; text-align: center; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
