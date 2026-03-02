@@ -1,10 +1,10 @@
 // CONFIG
 // Set window.TALK_EARN_HOST before loading this script to override (e.g. from Flutter or build tool).
 // Falls back to the current browser hostname (works for both local dev and production).
-const LOCAL_IP = window.TALK_EARN_HOST || window.location.hostname || "127.0.0.1";
-const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent) || window.location.hostname !== "127.0.0.1";
-const API_BASE = isMobile ? `http://${LOCAL_IP}:8000` : "http://127.0.0.1:8000";
-const WS_BASE = isMobile ? `ws://${LOCAL_IP}:8000` : "ws://127.0.0.1:8000";
+
+
+
+
 
 // STATE
 let currentToken = null;
@@ -232,11 +232,7 @@ authForm.addEventListener('submit', async (e) => {
         if (!isLoginMode) {
             // Register
             const gender = document.getElementById('gender').value;
-            const res = await fetch(`${API_BASE}/auth/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, gender })
-            });
+            const res = await window.apiService.register(email, password, gender);
 
             if (!res.ok) {
                 const errData = await res.json();
@@ -253,11 +249,7 @@ authForm.addEventListener('submit', async (e) => {
         }
 
         // Login (run immediately after register, or distinct)
-        const resObj = await fetch(`${API_BASE}/auth/token`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
+        const resObj = await window.apiService.login(email, password);
 
         if (!resObj.ok) {
             const errData = await resObj.json();
@@ -287,11 +279,7 @@ otpForm.addEventListener('submit', async (e) => {
     const otp_code = document.getElementById('otp-code').value;
 
     try {
-        const res = await fetch(`${API_BASE}/auth/verify-email`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: pendingEmail, otp_code })
-        });
+        const res = await window.apiService.verifyEmail(pendingEmail, otp_code);
 
         if (!res.ok) {
             const err = await res.json();
@@ -299,11 +287,7 @@ otpForm.addEventListener('submit', async (e) => {
         }
 
         // Auto-login via token
-        const resObj = await fetch(`${API_BASE}/auth/token`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: pendingEmail, password: pendingPassword })
-        });
+        const resObj = await window.apiService.login(pendingEmail, pendingPassword);
 
         if (!resObj.ok) throw new Error("Auto-login failed. Please refresh and try logging in.");
         const data = await resObj.json();
@@ -382,9 +366,7 @@ async function loadDashboard() {
 refreshWalletBtn.addEventListener('click', refreshWallet);
 async function refreshWallet() {
     try {
-        const meRes = await fetch(`${API_BASE}/profile/me`, {
-            headers: { 'Authorization': `Bearer ${currentToken}` }
-        });
+        const meRes = await window.apiService.getProfile();
         const meData = await meRes.json();
         currentUserId = meData.id;
         currentUserName = meData.full_name || `User ${meData.id}`;
@@ -411,9 +393,7 @@ async function refreshWallet() {
             }
         } catch (e) { console.error("Avatar Parse Error", e); }
 
-        const res = await fetch(`${API_BASE}/wallet/balance`, {
-            headers: { 'Authorization': `Bearer ${currentToken}` }
-        });
+        const res = await window.apiService.getWalletBalance();
         if (res.ok) {
             const data = await res.json();
             walletBalance.innerText = data.balance;
@@ -423,14 +403,7 @@ async function refreshWallet() {
 
 withdrawBtn.addEventListener('click', async () => {
     try {
-        const res = await fetch(`${API_BASE}/wallet/withdraw`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
-            },
-            body: JSON.stringify({ payout_provider: "paypal", amount: 100 })
-        });
+        const res = await window.apiService.withdrawCoins('paypal', 100);
 
         const data = await res.json();
         walletMsg.style.display = "block";
@@ -449,14 +422,7 @@ withdrawBtn.addEventListener('click', async () => {
 
 savePrefBtn.addEventListener('click', async () => {
     try {
-        const res = await fetch(`${API_BASE}/profile/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
-            },
-            body: JSON.stringify({ gender_preference: prefGender.value })
-        });
+        const res = await window.apiService.updateProfile({ gender_preference: prefGender.value });
         if (res.ok) logToUI(`Preference saved: ${prefGender.value}`);
     } catch (err) { console.error(err); }
 });
@@ -478,7 +444,7 @@ function connectGlobalWebSocket() {
     // Generate a temporary display name for the lobby if one doesn't exist yet
     const rawUsername = `User_${currentUserId}`;
 
-    globalWs = new WebSocket(`${WS_BASE}/chat/ws/global/${rawUsername}`);
+    globalWs = new WebSocket(`${window.apiService.WS_BASE}/chat/ws/global/${rawUsername}`);
 
     const statusEl = document.getElementById('global-ws-status');
     const msgContainer = document.getElementById('global-messages-container');
@@ -560,7 +526,7 @@ globalChatInput.addEventListener('keypress', (e) => {
 
 
 function connectWebSocket() {
-    ws = new WebSocket(`${WS_BASE}/chat/ws/${currentToken}`);
+    ws = new WebSocket(`${window.apiService.WS_BASE}/chat/ws/${currentToken}`);
 
     ws.onopen = () => {
         wsStatus.innerText = "Connected & Ready";
@@ -1064,9 +1030,7 @@ if (settingsBtn) {
     settingsBtn.addEventListener('click', async () => {
         settingsModal.classList.add('active');
         try {
-            const res = await fetch(`${API_BASE}/profile/me`, {
-                headers: { 'Authorization': `Bearer ${currentToken}` }
-            });
+            const res = await window.apiService.getProfile();
             const data = await res.json();
 
             // Populate Readonly Info
@@ -1157,11 +1121,7 @@ if (triggerUploadBtn && profileUploadInput) {
         uploadMsg.innerText = 'Uploading...';
 
         try {
-            const res = await fetch(`${API_BASE}/profile/picture/upload`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${currentToken}` },
-                body: formData
-            });
+            const res = await window.apiService.uploadProfilePicture(formData);
 
             if (!res.ok) {
                 const err = await res.json();
@@ -1502,14 +1462,7 @@ if (closeStudioBtn) {
 if (saveAvatarBtn) {
     saveAvatarBtn.addEventListener('click', async () => {
         try {
-            const res = await fetch(`${API_BASE}/profile/`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentToken}`
-                },
-                body: JSON.stringify({ customizations: JSON.stringify(currentAvatarState) })
-            });
+            const res = await window.apiService.updateProfile({ customizations: JSON.stringify(currentAvatarState) });
 
             if (!res.ok) throw new Error("Failed to save avatar");
 
