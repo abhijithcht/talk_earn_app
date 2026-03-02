@@ -37,3 +37,7 @@ app.include_router(admin_router.router)
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+# Serve the web frontend from www/ at root (must be LAST — after all API routers)
+os.makedirs("www", exist_ok=True)
+app.mount("/", StaticFiles(directory="www", html=True), name="www")
