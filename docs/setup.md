@@ -1,6 +1,7 @@
 # 🛠️ Setup Guide
 
-Step-by-step instructions to get Talk & Earn running locally on **Windows 11**.
+Step-by-step instructions to get **Talk & Earn** running locally on **Windows 11**.
+This platform provides a structured, safe part-time earning model via secure chat/audio/video sessions, with strict verification, automated rules, and clear coin-to-USD payouts.
 
 ---
 
@@ -41,29 +42,35 @@ pip install -r requirements.txt
 
 ---
 
-## 3. Environment Variables
+## 3. Environment Variables (Platform Rules)
 
 ```powershell
 # Copy the template
 Copy-Item .env.example .env
 ```
 
-Open `.env` and fill in the real values:
+Open `.env` and configure the platform parameters:
 
-| Variable                      | Required | Description                                                          |
-| ----------------------------- | -------- | -------------------------------------------------------------------- |
-| `DATABASE_URL`                | ✅        | Default SQLite works out of the box. Change to MySQL for production. |
-| `SECRET_KEY`                  | ✅        | A long random string for JWT signing. **Change this!**               |
-| `ALGORITHM`                   | ✅        | JWT algorithm. Keep `HS256`.                                         |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | ✅        | Token lifetime. Default: `720` (12 hours).                           |
-| `SMTP_HOST`                   | ❌        | Gmail SMTP host for OTP emails (e.g. `smtp.gmail.com`).              |
-| `SMTP_PORT`                   | ❌        | SMTP port. Default: `587`.                                           |
-| `SMTP_USER`                   | ❌        | Your email for sending OTP codes.                                    |
-| `SMTP_PASS`                   | ❌        | App-specific password for SMTP.                                      |
-| `STRIPE_SECRET_KEY`           | ❌        | Stripe test key for payout integration.                              |
-| `TEXT_COINS_PER_MIN`          | ✅        | Coins earned per minute of text chat. Default: `1`.                  |
-| `AUDIO_COINS_PER_MIN`         | ✅        | Coins earned per minute of audio call. Default: `2`.                 |
-| `VIDEO_COINS_PER_MIN`         | ✅        | Coins earned per minute of video call. Default: `5`.                 |
+| Variable                      | Required | Description                                                         |
+| ----------------------------- | -------- | ------------------------------------------------------------------- |
+| `DATABASE_URL`                | ✅        | Database URI. Default SQLite works out of the box.                  |
+| `SECRET_KEY`                  | ✅        | A long random string for JWT signing. **Change this!**              |
+| `ALGORITHM`                   | ✅        | JWT algorithm. Keep `HS256`.                                        |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | ✅        | Token lifetime. Default: `720` (12 hours).                          |
+| `SMTP_HOST`                   | ❌        | App SMTP host used for sending OTP verification codes.              |
+| `SMTP_PORT`                   | ❌        | SMTP port. Default: `587`.                                          |
+| `SMTP_USER`                   | ❌        | Platform email for sending OTPs.                                    |
+| `SMTP_PASS`                   | ❌        | App-specific password for SMTP.                                     |
+| `STRIPE_SECRET_KEY`           | ❌        | Stripe/PayPal provider keys for secure coin-to-USD payouts.         |
+| **`LOCAL_IP`**                | ❌        | Current LAN IP (e.g. `192.168.1.100`) to test frontend from mobile. |
+
+### Earning Conversion Rates
+As per the platform concept (100 coins = $1):
+| Variable              | Required | Description                                          |
+| --------------------- | -------- | ---------------------------------------------------- |
+| `TEXT_COINS_PER_MIN`  | ✅        | Coins earned per minute of text chat. Default: `1`.  |
+| `AUDIO_COINS_PER_MIN` | ✅        | Coins earned per minute of audio call. Default: `2`. |
+| `VIDEO_COINS_PER_MIN` | ✅        | Coins earned per minute of video call. Default: `5`. |
 
 ---
 

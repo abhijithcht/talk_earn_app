@@ -56,8 +56,9 @@ talk_earn_app/
 ├── docs/                   # Documentation
 │   ├── Environment.md      # Target architecture roadmap
 │   ├── Features.md         # Target tech stack
-│   ├── setup.md            # Full setup guide
-│   └── api.md              # API endpoint reference
+│   ├── setup.md            # Full setup guide (How to run & Env Variables)
+│   ├── api.md              # API endpoint reference
+│   └── database.md         # Platform concept to DB mapping
 ├── .env.example            # Environment template
 ├── requirements.txt        # Python dependencies
 ├── package.json            # Node/Capacitor dependencies
