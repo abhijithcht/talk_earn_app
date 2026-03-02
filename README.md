@@ -47,24 +47,22 @@ talk_earn_app/
 │   ├── schemas.py          # Pydantic request/response schemas
 │   ├── auth.py             # JWT token creation
 │   ├── routers/            # 8 API router modules
-│   │   ├── auth_router.py
-│   │   ├── wallet_router.py
-│   │   ├── chat_router.py
-│   │   ├── match_router.py
-│   │   ├── profile_router.py
-│   │   ├── verification_router.py
-│   │   ├── moderation_router.py
-│   │   └── admin_router.py
 │   └── services/           # Business logic (email, payments)
+├── tests/                  # Integration tests (pytest)
+├── scripts/                # Utility scripts (migrations, etc.)
+├── www/                    # Web frontend (JS + HTML)
 ├── flutter_app/            # Flutter mobile wrapper (WebView)
 ├── android/                # Capacitor Android shell
-├── www/                    # Web frontend (JS + HTML)
-│   ├── index.html
-│   └── app.js
-├── docs/                   # Architecture & feature docs
+├── docs/                   # Documentation
+│   ├── Environment.md      # Target architecture roadmap
+│   ├── Features.md         # Target tech stack
+│   ├── setup.md            # Full setup guide
+│   └── api.md              # API endpoint reference
 ├── .env.example            # Environment template
 ├── requirements.txt        # Python dependencies
-└── package.json            # Node/Capacitor dependencies
+├── package.json            # Node/Capacitor dependencies
+├── CONTRIBUTING.md         # Contribution guide
+└── LICENSE                 # ISC license
 ```
 
 ### Tech Stack (Current Prototype)
@@ -112,7 +110,7 @@ Open `http://127.0.0.1:8000` — the API is live. The web frontend is served fro
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
-pytest test_api.py -v
+pytest tests/ -v
 ```
 
 ---
