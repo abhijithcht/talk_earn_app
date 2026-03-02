@@ -124,7 +124,7 @@
                         style="color: var(--secondary); text-decoration: none; font-weight: 500; margin-left: 0.5rem;">Register</a>
                 </div>
 
-                <div id="auth-error"
+                <div id="auth-error" aria-live="polite"
                     style="color: #ef4444; margin-top: 1rem; text-align: center; font-size: 0.9rem; display: none;">
                 </div>
             </div>
@@ -146,7 +146,7 @@
                         <div class="loader" id="otp-loader"></div>
                     </button>
                 </form>
-                <div id="otp-error"
+                <div id="otp-error" aria-live="polite"
                     style="color: #ef4444; margin-top: 1rem; text-align: center; font-size: 0.9rem; display: none;">
                 </div>
             </div>
@@ -372,7 +372,7 @@
             <button class="btn btn-primary" id="submit-rating-btn" style="width: 100%; padding: 1rem;" disabled>
                 Submit Feedback
             </button>
-            <div id="rating-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.85rem; display: none;"></div>
+            <div id="rating-error" aria-live="polite" style="color: #ef4444; margin-top: 1rem; font-size: 0.85rem; display: none;"></div>
         </div>
     </div>
 
@@ -406,7 +406,7 @@
                     <input type="text" id="setting-interests-input" placeholder="Coding, Music, Travel">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Save Profile</button>
-                <div id="profile-edit-msg" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+                <div id="profile-edit-msg" aria-live="polite" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
             </form>
 
             <h4 style="color: white; margin-bottom: 0.5rem;">Design & Appearance</h4>
@@ -430,7 +430,7 @@
                 <button class="btn btn-success" id="open-studio-from-settings"
                     style="width: 100%; padding: 0.75rem; font-size: 0.9rem; background: linear-gradient(135deg, #10b981, #059669);"><i
                         class="fa-solid fa-wand-magic-sparkles"></i> Open 3D Avatar Studio</button>
-                <div id="upload-msg" style="margin-top: -0.5rem; font-size: 0.8rem; display: none;"></div>
+                <div id="upload-msg" aria-live="polite" style="margin-top: -0.5rem; font-size: 0.8rem; display: none;"></div>
             </div>
 
             <h4 style="color: white; margin-bottom: 0.5rem;">Account Info</h4>
@@ -453,7 +453,7 @@
                         autocomplete="new-password">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Update Password</button>
-                <div id="password-msg" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+                <div id="password-msg" aria-live="polite" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
             </form>
 
             <h4 style="color: #ef4444; margin-bottom: 0.5rem;"><i class="fa-solid fa-triangle-exclamation"></i> Danger
@@ -467,7 +467,7 @@
                         <input type="password" id="delete-password" placeholder="Confirm Password to Delete" required>
                     </div>
                     <button type="submit" class="btn btn-danger" style="width: 100%;">Delete Account</button>
-                    <div id="delete-msg" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+                    <div id="delete-msg" aria-live="polite" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
                 </form>
             </div>
         </div>
@@ -515,7 +515,7 @@
                     style="width: 100%; padding: 1rem; margin-top: auto; font-size: 1.1rem;">
                     <i class="fa-solid fa-check"></i> Save Custom Avatar
                 </button>
-                <div id="studio-error-msg"
+                <div id="studio-error-msg" aria-live="polite"
                     style="color: #ef4444; font-size: 0.85rem; text-align: center; display: none;"></div>
             </div>
         </div>

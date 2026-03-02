@@ -7,6 +7,13 @@
 
 
 // STATE
+function showError(element, message) {
+    element.innerText = message;
+    element.style.display = 'block';
+    element.classList.remove('error-animate');
+    void element.offsetWidth; // trigger reflow to restart animation
+    element.classList.add('error-animate');
+}
 let currentToken = null;
 let currentUserId = null;
 let currentUserName = null;
@@ -262,8 +269,7 @@ authForm.addEventListener('submit', async (e) => {
 
         loadDashboard();
     } catch (err) {
-        authError.innerText = err.message;
-        authError.style.display = "block";
+        showError(authError, err.message);
     } finally {
         setLoading(false);
     }
@@ -301,8 +307,7 @@ otpForm.addEventListener('submit', async (e) => {
         loadDashboard();
 
     } catch (err) {
-        otpError.innerText = err.message;
-        otpError.style.display = "block";
+        showError(otpError, err.message);
     } finally {
         otpBtnText.style.display = "inline";
         otpLoader.style.display = "none";
@@ -1090,9 +1095,8 @@ if (profileEditForm) {
             // Update local state if needed
             refreshWallet();
         } catch (err) {
-            msgDiv.style.display = 'block';
             msgDiv.style.color = '#ef4444';
-            msgDiv.innerText = err.message;
+            showError(msgDiv, err.message);
         }
     });
 }
@@ -1474,8 +1478,7 @@ if (saveAvatarBtn) {
             logToUI("Avatar successfully customized and synced.");
         } catch (err) {
             const errDiv = document.getElementById('studio-error-msg');
-            errDiv.style.display = 'block';
-            errDiv.innerText = err.message;
+            showError(errDiv, err.message);
         }
     });
 }
