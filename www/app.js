@@ -449,7 +449,7 @@ withdrawBtn.addEventListener('click', async () => {
 
 savePrefBtn.addEventListener('click', async () => {
     try {
-        const res = await fetch(`${API_BASE}/profile/me`, {
+        const res = await fetch(`${API_BASE}/profile/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
