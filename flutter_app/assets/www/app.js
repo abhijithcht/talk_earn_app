@@ -253,7 +253,15 @@ authForm.addEventListener('submit', async (e) => {
 
         if (!resObj.ok) {
             const errData = await resObj.json();
-            throw new Error(errData.detail || "Invalid credentials");
+            let errorMsg = "Invalid credentials";
+            if (errData.detail) {
+                if (Array.isArray(errData.detail)) {
+                    errorMsg = errData.detail.map(e => e.msg).join(". ");
+                } else {
+                    errorMsg = errData.detail;
+                }
+            }
+            throw new Error(errorMsg);
         }
         const data = await resObj.json();
 
@@ -920,6 +928,18 @@ function stopEarningLoop() {
         clearInterval(earningInterval);
         earningInterval = null;
     }
+}
+
+function showError(element, message) {
+    if (typeof message === 'object') {
+        if (Array.isArray(message)) {
+            message = message.map(err => err.msg || JSON.stringify(err)).join(', ');
+        } else {
+            message = JSON.stringify(message);
+        }
+    }
+    element.innerText = message;
+    element.style.display = "block";
 }
 
 // TEXT CHAT LOGIC

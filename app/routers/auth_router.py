@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
@@ -40,8 +42,9 @@ class UserLogin(BaseModel):
     password: str
 
 @router.post("/token", response_model=Token)
-async def login(form_data: UserLogin, db: AsyncSession = Depends(get_db)):
-    q = await db.execute(select(User).where(User.email == form_data.email))
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
+    print(f"DEBUG: Login Attempt - Username: {form_data.username}")
+    q = await db.execute(select(User).where(User.email == form_data.username))
     user = q.scalars().first()
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")

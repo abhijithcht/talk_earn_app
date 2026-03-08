@@ -8,6 +8,13 @@
 
 // STATE
 function showError(element, message) {
+    if (typeof message === 'object') {
+        if (Array.isArray(message)) {
+            message = message.map(err => err.msg || JSON.stringify(err)).join(', ');
+        } else {
+            message = JSON.stringify(message);
+        }
+    }
     element.innerText = message;
     element.style.display = 'block';
     element.classList.remove('error-animate');
@@ -260,7 +267,15 @@ authForm.addEventListener('submit', async (e) => {
 
         if (!resObj.ok) {
             const errData = await resObj.json();
-            throw new Error(errData.detail || "Invalid credentials");
+            let errorMsg = "Invalid credentials";
+            if (errData.detail) {
+                if (Array.isArray(errData.detail)) {
+                    errorMsg = errData.detail.map(e => e.msg).join(". ");
+                } else {
+                    errorMsg = errData.detail;
+                }
+            }
+            throw new Error(errorMsg);
         }
         const data = await resObj.json();
 
@@ -625,7 +640,7 @@ async function startMatchmaking(medium) {
 
         logToUI(`Requested /match/random pool entry for ${medium}...`);
 
-        const res = await fetch(`${API_BASE}/match/random`, {
+        const res = await fetch(`${window.apiService.API_BASE}/match/random`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${currentToken}`,
@@ -774,7 +789,7 @@ document.getElementById('cancel-match-btn').addEventListener('click', async () =
     if (!isMatching) return;
 
     try {
-        await fetch(`${API_BASE}/match/cancel`, {
+        await fetch(`${window.apiService.API_BASE}/match/cancel`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${currentToken}`,
@@ -900,7 +915,7 @@ function startEarningLoop() {
     // Ping the backend every 60 seconds to earn credits for the current medium
     earningInterval = setInterval(async () => {
         try {
-            const res = await fetch(`${API_BASE}/wallet/earn`, {
+            const res = await fetch(`${window.apiService.API_BASE}/wallet/earn`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${currentToken}`,
@@ -1076,7 +1091,7 @@ if (profileEditForm) {
         };
 
         try {
-            const res = await fetch(`${API_BASE}/profile/`, {
+            const res = await fetch(`${window.apiService.API_BASE}/profile/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1171,7 +1186,7 @@ if (passwordForm) {
         const msgDiv = document.getElementById('password-msg');
 
         try {
-            const res = await fetch(`${API_BASE}/profile/password`, {
+            const res = await fetch(`${window.apiService.API_BASE}/profile/password`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1205,7 +1220,7 @@ if (deleteAccountForm) {
         if (!confirm("Are you absolutely sure you want to permanently delete your account?")) return;
 
         try {
-            const res = await fetch(`${API_BASE}/profile/account/delete`, {
+            const res = await fetch(`${window.apiService.API_BASE}/profile/account/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

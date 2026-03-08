@@ -34,11 +34,11 @@ class ApiService {
         });
     }
 
-    async login(username, password) {
+    async login(email, password) {
         return fetch(`${this.API_BASE}/auth/token`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            body: `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
         });
     }
 
