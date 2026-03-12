@@ -89,10 +89,10 @@ class _MainWebViewState extends State<MainWebView> {
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {},
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
+          onProgress: (progress) {},
+          onPageStarted: (url) {},
+          onPageFinished: (url) {},
+          onWebResourceError: (error) {},
         ),
       )
       ..loadFlutterAsset('assets/www/index.html');

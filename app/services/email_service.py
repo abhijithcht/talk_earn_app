@@ -14,7 +14,9 @@ async def send_otp_email(to_email: str, otp_code: str):
         return False
 
     message = EmailMessage()
-    message["From"] = settings.SMTP_USER or "noreply@talkearn.com"
+    # Use SMTP_USER for 'From' if set, otherwise a default
+    from_email = settings.SMTP_USER or "noreply@talkearn.com"
+    message["From"] = from_email
     message["To"] = to_email
     message["Subject"] = "Verify Your Talk & Earn Account"
     message.set_content(f"Your verification code is: {otp_code}\nPlease enter this code to activate your account.")
@@ -26,9 +28,10 @@ async def send_otp_email(to_email: str, otp_code: str):
             "use_tls": settings.SMTP_PORT == 465,
             "start_tls": settings.SMTP_PORT == 587,
         }
-        if settings.SMTP_USER:
+        # Only authenticate if BOTH username and password are provided
+        # This fixes issues with servers like Mailpit that don't support AUTH
+        if settings.SMTP_USER and settings.SMTP_PASS:
             smtp_args["username"] = settings.SMTP_USER
-        if settings.SMTP_PASS:
             smtp_args["password"] = settings.SMTP_PASS
 
         await aiosmtplib.send(message, **smtp_args)
